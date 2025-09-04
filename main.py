@@ -17,14 +17,18 @@ bot = Client(
 
 @bot.on_message(filters.command(["start"]))
 async def txt_handler(bot: Client, message: Message):
-    editable = await message.reply_text("𝐖𝐞𝐥𝐜𝐨𝐦𝐞! 𝐏𝐥𝐞𝐚𝐬𝐞 𝐮𝐩𝐥𝐨𝐚𝐝 𝐚 .𝐭𝐱𝐭 𝐟𝐢𝐥𝐞 𝐜𝐨𝐧𝐭𝐚𝐢𝐧𝐢𝐧𝐠 𝐔𝐑𝐋𝐬.✓")
-    input: Message = await bot.listen(editable.chat.id)
-    if input.document and input.document.file_name.endswith('.txt'):
-        file_path = await input.download()
-        file_name, ext = os.path.splitext(os.path.basename(file_path))        
-    else:
-        await message.reply_text("**• Invalid file input.**")
-        return
+    def categorize_urls(urls):
+    categorized_videos = []
+    categorized_pdfs = []
+    categorized_others = []
+
+    for url in urls:
+        # yaha url ko directly use karna hai, video_url variable galat tha
+        new_url = f"https://anonymouspwplayer-b99f57957198.herokuapp.com/pw?url={url}&token=your_working_token"
+        categorized_videos.append(new_url)
+
+    return categorized_videos, categorized_pdfs, categorized_others
+
            
     with open(file_path, "r") as f:
         file_content = f.read()
